@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Broadcasting Panel</title>
+    <link href="/styles.css" rel="stylesheet" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <nav>
+    <div class="nav-wrapper black">
+      <a href="#" class="brand-logo right center">TWITCHER</a>
+    </div>
+  </nav>
+
+
+    <div class="valign-wrapper">
+      <video playsinline autoplay muted></video>
+    </div>
+
+    <div class="selector">
+      <section class="select">
+        <span>Audio source: <span>
+        <select id="audioSource"></select>
+      </section>
+
+      <section class="select">
+        <span>Video source: </span>
+        <select id="videoSource"></select>
+      </section>
+  </div>
+  
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/broadcast.js"></script>
+  </body>
+</html>

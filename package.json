@@ -1,0 +1,22 @@
+{
+  "name": "Twitcher",
+  "version": "1.0.0",
+  "description": "WebRTC video broadcast",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WebRTC",
+    "SocketIO"
+  ],
+  "author": "Igor Bojczuk",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.4.0"
+  },
+  "devDependencies": {
+    "eslint": "7.0.0"
+  }
+}

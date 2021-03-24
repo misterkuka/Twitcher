@@ -1,0 +1,22 @@
+html {
+  overflow: hidden;
+  height: 100%;
+  background: #b8b3a7;
+  text-align: center;
+}
+
+video {
+  width: 700px;
+  height: 500px;
+  margin: 20px auto;
+}
+
+select {
+  display:block !important;
+}
+
+.selector {
+  font-size: 2em;
+  width:30%;
+  margin:20px auto;
+}
