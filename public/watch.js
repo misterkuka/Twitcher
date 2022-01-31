@@ -20,8 +20,8 @@ socket.on("offer", (id, description) => {
     .then(() => peerConnection.createAnswer())
     .then((answer) => {
       var local = peerConnection.setLocalDescription(answer)
-      answer.sdp = setMediaBitrates(answer.sdp)
-      console.log(answer.sdp)
+      // answer.sdp = setMediaBitrates(answer.sdp)
+      // console.log(answer.sdp)
       return local
     })
     .then(() => {
