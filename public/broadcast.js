@@ -28,8 +28,13 @@ socket.on("watcher", id => {
 
   peerConnection
     .createOffer()
-    .then(sdp => peerConnection.setLocalDescription(sdp))
-    .then(() => {
+    .then(function(offer) {
+      console.log('The offer SDP:', offer.sdp)
+      var local = peerConnection.setLocalDescription(offer)
+        // offer.sdp = setMediaBitrates(offer.sdp)
+        return local
+    }
+    ).then(() => {
       socket.emit("offer", id, peerConnection.localDescription);
     });
 });
@@ -87,8 +92,16 @@ function getStream() {
   const audioSource = audioSelect.value;
   const videoSource = videoSelect.value;
   const constraints = {
-    audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
-    video: { deviceId: videoSource ? { exact: videoSource } : undefined }
+    audio: {
+      deviceId: audioSource ? { exact: audioSource } : undefined,
+      channelCount:2,
+      sampleSize: 24
+   },
+    video: {
+    deviceId: videoSource ? { exact: videoSource } : undefined,
+    width: { min: 200, ideal: 200 },
+    height: { min: 100, ideal: 100 },
+   }
   };
   return navigator.mediaDevices
     .getUserMedia(constraints)
@@ -110,4 +123,47 @@ function gotStream(stream) {
 
 function handleError(error) {
   console.error("Error: ", error);
+}
+
+
+function setMediaBitrates(sdp) {
+  return setMediaBitrate(setMediaBitrate(sdp, "video", 1), "audio", 50);
+}
+
+function setMediaBitrate(sdp, media, bitrate) {
+  var lines = sdp.split("\n");
+  var line = -1;
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].indexOf("m="+media) === 0) {
+      line = i;
+      break;
+    }
+  }
+  if (line === -1) {
+    console.debug("Could not find the m line for", media);
+    return sdp;
+  }
+  console.debug("Found the m line for", media, "at line", line);
+
+  // Pass the m line
+  line++;
+
+  // Skip i and c lines
+  while(lines[line].indexOf("i=") === 0 || lines[line].indexOf("c=") === 0) {
+    line++;
+  }
+
+  // If we're on a b line, replace it
+  if (lines[line].indexOf("b") === 0) {
+    console.debug("Replaced b line at line", line);
+    lines[line] = "b=AS:"+bitrate;
+    return lines.join("\n");
+  }
+
+  // Add a new b line
+  console.debug("Adding new b line before line", line);
+  var newLines = lines.slice(0, line)
+  newLines.push("b=AS:"+bitrate)
+  newLines = newLines.concat(lines.slice(line, lines.length))
+  return newLines.join("\n")
 }
