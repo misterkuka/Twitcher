@@ -20,7 +20,8 @@ socket.on("offer", (id, description) => {
     .then(() => peerConnection.createAnswer())
     .then((answer) => {
       var local = peerConnection.setLocalDescription(answer)
-      // answer.sdp = setMediaBitrates(answer.sdp)
+      answer.sdp = setMediaBitrates(answer.sdp)
+      console.log(answer.sdp)
       return local
     })
     .then(() => {
@@ -64,7 +65,7 @@ function enableAudio() {
 
 
 function setMediaBitrates(sdp) {
-  return setMediaBitrate(setMediaBitrate(sdp, "video", 0.001), "audio", 50);
+  return setMediaBitrate(setMediaBitrate(sdp, "video", 50), "audio", 320);
 }
 
 function setMediaBitrate(sdp, media, bitrate) {

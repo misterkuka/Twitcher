@@ -29,9 +29,9 @@ socket.on("watcher", id => {
   peerConnection
     .createOffer()
     .then(function(offer) {
-      console.log('The offer SDP:', offer.sdp)
       var local = peerConnection.setLocalDescription(offer)
-        // offer.sdp = setMediaBitrates(offer.sdp)
+        offer.sdp = setMediaBitrates(offer.sdp)
+        console.log('The offer SDP:', offer.sdp)
         return local
     }
     ).then(() => {
@@ -95,12 +95,10 @@ function getStream() {
     audio: {
       deviceId: audioSource ? { exact: audioSource } : undefined,
       channelCount:2,
-      sampleSize: 24
+      sampleSize: 16
    },
     video: {
     deviceId: videoSource ? { exact: videoSource } : undefined,
-    width: { min: 200, ideal: 200 },
-    height: { min: 100, ideal: 100 },
    }
   };
   return navigator.mediaDevices
@@ -127,7 +125,7 @@ function handleError(error) {
 
 
 function setMediaBitrates(sdp) {
-  return setMediaBitrate(setMediaBitrate(sdp, "video", 1), "audio", 50);
+  return setMediaBitrate(setMediaBitrate(sdp, "video", 30), "audio", 320);
 }
 
 function setMediaBitrate(sdp, media, bitrate) {
